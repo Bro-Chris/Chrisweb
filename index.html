@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="google-site-verification" content="tmapOmD6ExZvEQMmgoFe87-my4C5CAUwkoYk6vGzOms" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bro Chris Furnitures & Architectural Consults</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; background: linear-gradient(to right, pink, gray); }
+    header { background: navy; color: white; padding: 30px; display: flex; align-items: center; justify-content: space-between; }
+    nav { display: flex; gap: 40px; }
+    nav a { color: white; text-decoration: none; font-weight: bold; }
+    .search-bar { text-align: center; margin: 5px; }
+    .search-bar input[type="text"] { width: 50%; padding: 5px; }
+    .search-bar button { padding: 5px 12px; }
+    .gallery, .products, .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
+    .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; }
+    .card button { background: #333; color: white; border: none; padding: 10px; width: 100%; margin-top: 10px; cursor: pointer; border-radius: 5px; }
+    footer { text-align: center; padding: 10px; background: #333; color: white; margin-top: 20px; }
+    #cart { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 10px; border-radius: 8px; max-width: 250px; }
+    .hidden { display: none; }
+    #checkout-form { background: white; padding: 20px; margin: 20px auto; width: 90%; max-width: 500px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    #checkout-form input, #checkout-form select { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; }
+    #checkout-form button { background: green; color: white; padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer; }
+    #payment-info { margin: 20px auto; text-align: center; background: #f9f9f9; padding: 15px; width: 90%; max-width: 400px; border-radius: 10px; }
+    #pagination { text-align: center; margin: 20px; }
+    #pagination button { margin: 5px; padding: 8px 12px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+    .cart-item span { font-size: 14px; }
+    .cart-item button { background: red; border: none; color: white; padding: 2px 6px; border-radius: 50%; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" onclick="showHome()">Home</a>
+    <a href="#" onclick="showShop()">Shop</a>
+    <a href="#" onclick="showServices()">Services</a>
+    <a href="#" onclick="showContact()">Contact</a>
+  </nav>
+  <div id="cart">
+    <div><strong>Cart (<span id="cart-count">0</span>)</strong></div>
+    <div id="cart-items"></div>
+    <div>Total: ₦<span id="cart-total">0</span></div>
+    <button onclick="clearCart()">Cancel All</button>
+  </div>
+</header>
+
+<div class="search-bar">
+  <input type="text" id="search" placeholder="Search products...">
+  <button onclick="searchProducts()">Search</button>
+</div>
+
+<main>
+  <section id="home-section">
+    <div style="text-align: center; padding: 10px;">
+      <img src="logo.png" alt="Bro Chris Logo" style="height: 180px;">
+    </div>
+    <h1 style="text-align:center;">BRO CHRIS FURNITURES & ARCHITECTURAL CONSULTS.</h1>
+    <h5 style="text-align:center;">(Quality & Elegance in Every Piece.)</h5>
+    <div class="gallery">
+      <div class="card"><img src="30.jpg" alt="Luxury Sofa"><h3>Luxury Sofa Set</h3></div>
+      <div class="card"><img src="11.jpg" alt="Modern Bed"><h3>Modern Bed Frame</h3></div>
+      <div class="card"><img src="3d.jpg" alt="Duplex Design"><h3>Duplex House Design</h3></div>
+      <div class="card"><img src="design.jpg" alt="Office Blueprint"><h3>Interior Designs</h3></div>
+    </div>
+  </section>
+
+  <section id="shop-section" class="hidden">
+    <div id="product-container" class="products"></div>
+    <div id="pagination"></div>
+  </section>
+
+  <section id="services-section" class="hidden services">
+    <div class="card"><img src="2000.jpg" alt="Furniture Design"><h3>Furniture Design</h3><p>We design and craft custom furnitures to your taste and needs.</p></div>
+    <div class="card"><img src="project.jpg" alt="Architectural Drawings"><h3>Architectural Drawings</h3><p>Professional building and structural plans by certified architects.</p></div>
+    <div class="card"><img src="int.jpg" alt="Interior Decoration"><h3>Interior Decoration</h3><p>Modern interior designs to beautify your homes and offices.</p></div>
+  </section>
+
+  <section id="contact-section" class="hidden">
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="https://wa.me/2347016876413" target="_blank" style="background-color: #25D366; color: white; padding: 10px 20px; border-radius: 40px; text-decoration: none; font-weight: bold;">
+        Chat with us on WhatsApp
+      </a>
+      <div style="margin-top: 20px;">
+        <img src="qr.png" alt="Scan to Contact" style="width:150px;">
+      </div>
+      <h2>Contact Us: princechrisboy@gmail.com</h2>
+      <h4>Thank you for choosing Bro Chris</h4>
+    </div>
+  </section>
+
+  <form id="checkout-form" class="hidden" action="https://getform.io/f/ayvkglwb" method="POST">
+    <h3 style="text-align:center;">Complete Your Order</h3>
+    <input type="text" name="name" id="customer-name" placeholder="Your Name" required>
+    <input type="email" name="email" id="customer-email" placeholder="Your Email" required>
+    <input type="tel" name="phone" id="customer-phone" placeholder="Your Phone Number" required>
+    <input type="hidden" name="order-details" id="order-details">
+    <input type="hidden" name="_next" value="https://yourwebsite.com/thank-you.html">
+    <input type="hidden" name="_captcha" value="false">
+    <button type="submit">Submit Order</button>
+  </form>
+
+  <div id="payment-info" class="hidden">
+    <p><strong>Payment Details:</strong></p>
+    <p>GTBank 0673164590</p>
+    <p>Account Name: CHRISTIAN CHINWEOTITO UZOMA</p>
+    <p>After payment, your order will be confirmed.</p>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 Bro Chris Furnitures and Architectural Consults
+</footer>
+
+<script>
+  let cartItems = [];
+  let products = [];
+  let currentPage = 1;
+  const itemsPerPage = 4;
+
+  function addToCart(itemName, price) {
+    cartItems.push({ name: itemName, price: price });
+    updateCart();
+    document.getElementById('checkout-form').classList.remove('hidden');
+    document.getElementById('payment-info').classList.remove('hidden');
+    document.getElementById('order-details').value = cartItems.map(i => i.name + " - ₦" + i.price).join(', ');
+  }
+
+  function removeItem(index) {
+    cartItems.splice(index, 1);
+    updateCart();
+  }
+
+  function clearCart() {
+    cartItems = [];
+    updateCart();
+  }
+
+  function updateCart() {
+    const cartCount = document.getElementById('cart-count');
+    const cartItemsDiv = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    cartCount.innerText = cartItems.length;
+    cartItemsDiv.innerHTML = '';
+    let total = 0;
+    cartItems.forEach((item, index) => {
+      total += item.price;
+      cartItemsDiv.innerHTML += `
+        <div class="cart-item">
+          <span>${item.name} - ₦${item.price.toLocaleString()}</span>
+          <button onclick="removeItem(${index})">×</button>
+        </div>`;
+    });
+    cartTotal.innerText = total.toLocaleString();
+    document.getElementById('order-details').value = cartItems.map(i => i.name + " - ₦" + i.price).join(', ');
+  }
+
+  function showHome() {
+    hideAll();
+    document.getElementById('home-section').classList.remove('hidden');
+  }
+
+  function showShop() {
+    hideAll();
+    document.getElementById('shop-section').classList.remove('hidden');
+    renderProducts();
+  }
+
+  function showServices() {
+    hideAll();
+    document.getElementById('services-section').classList.remove('hidden');
+  }
+
+  function showContact() {
+    hideAll();
+    document.getElementById('contact-section').classList.remove('hidden');
+  }
+
+  function hideAll() {
+    document.getElementById('home-section').classList.add('hidden');
+    document.getElementById('shop-section').classList.add('hidden');
+    document.getElementById('services-section').classList.add('hidden');
+    document.getElementById('contact-section').classList.add('hidden');
+    document.getElementById('checkout-form').classList.add('hidden');
+    document.getElementById('payment-info').classList.add('hidden');
+  }
+
+  function searchProducts() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const filteredProducts = products.filter(p => p.name.toLowerCase().includes(query));
+    renderProducts(filteredProducts);
+  }
+
+  function renderProducts(list = products) {
+    const container = document.getElementById('product-container');
+    container.innerHTML = '';
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    const totalPages = Math.ceil(list.length / itemsPerPage);
+    const start = (currentPage - 1) * itemsPerPage;
+    const selectedProducts = list.slice(start, start + itemsPerPage);
+
+    selectedProducts.forEach(product => {
+      container.innerHTML += `
+        <div class="card">
+          <img src="${product.image}" alt="${product.name}">
+          <h3>${product.name}</h3>
+          <p>Price: ₦${product.price.toLocaleString()}</p>
+          <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+        </div>`;
+    });
+
+    for (let i = 1; i <= totalPages; i++) {
+      pagination.innerHTML += `<button onclick="gotoPage(${i})">${i}</button>`;
+    }
+  }
+
+  function gotoPage(page) {
+    currentPage = page;
+    renderProducts();
+  }
+
+  products = [
+    { name: "Tv Console", price: 600000, image: "tv.jpg" },
+    { name: "Modern Dressing Mirror", price: 200000, image: "mir.jpg" },
+    { name: "Classic Sofa", price: 700000, image: "10.jpg" },
+    { name: "King Size Bed", price: 260000, image: "12.jpg" },
+    { name: "Luxury Sofa", price: 550000, image: "1.jpg" },
+    { name: "Dressing Mirror", price: 220000, image: "300.jpg" },
+    { name: "Queen Size Bed", price: 260000, image: "11.jpg" },
+    { name: "Office Table", price: 90000, image: "tb.jpg" },
+    { name: "Luxury Sofa", price: 800000, image: "sofa.jpg" },
+    { name: "Wardrobe", price: 130000, image: "222.jpg" },
+    { name: "Kitchen Cabinet", price: 300000, image: "kit.jpg" },
+    { name: "Tv Stand", price: 90000, image: "ts.jpg" },
+    { name: "Shelf", price: 550000, image: "sh.jpg" },
+    { name: "Center Table", price: 110000, image: "cnt.jpg" },
+    { name: "Dressing Mirror", price: 180000, image: "mi.jpg" },
+    { name: "Pulpit", price: 160000, image: "pul.jpg" },
+    { name: "Kitchen Cabinet", price: 200000, image: "k.jpg" },
+    { name: "King Size Wardrobe", price: 150000, image: "w.jpg" },
+    { name: "Antique Sofa", price: 4500000, image: "king.jpg" },
+    { name: "Dining Set", price: 400000, image: "din.jpg" }
+  ];
+</script>
+
+</body>
+</html>
